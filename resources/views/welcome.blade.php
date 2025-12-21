@@ -247,6 +247,7 @@
                 grid-template-columns: 1fr 1fr auto;
                 gap: 1.5rem;
                 align-items: end;
+                margin-bottom: 2rem;
             }
 
             .form-group {
@@ -293,6 +294,202 @@
             .search-btn:hover {
                 transform: translateY(-3px);
                 box-shadow: 0 10px 25px rgba(26, 115, 232, 0.3);
+            }
+
+            /* Search Results Styles - MODIFIÉ POUR RECTANGLE */
+            .search-results {
+                margin-top: 2rem;
+                border: 2px solid var(--primary);
+                background: var(--white);
+                padding: 0;
+                display: none;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .search-results.active {
+                display: block;
+                animation: fadeIn 0.5s ease;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .results-header {
+                background: var(--primary);
+                color: white;
+                padding: 1.5rem 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid var(--primary);
+            }
+
+            .results-count {
+                font-size: 1.1rem;
+                font-weight: 500;
+            }
+
+            .results-count strong {
+                font-weight: 600;
+                font-size: 1.2rem;
+            }
+
+            .clear-results {
+                background: white;
+                border: none;
+                color: var(--primary);
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-size: 0.9rem;
+                font-weight: 500;
+            }
+
+            .clear-results:hover {
+                background: var(--primary-light);
+                transform: translateY(-2px);
+            }
+
+            /* Conteneur des médecins avec style rectangle */
+            .doctor-container {
+                padding: 2rem;
+                max-height: 400px;
+                overflow-y: auto;
+            }
+
+            .doctor-container::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .doctor-container::-webkit-scrollbar-track {
+                background: var(--primary-light);
+                border-radius: 4px;
+            }
+
+            .doctor-container::-webkit-scrollbar-thumb {
+                background: var(--primary);
+                border-radius: 4px;
+            }
+
+            .doctor-container::-webkit-scrollbar-thumb:hover {
+                background: #0d47a1;
+            }
+
+            /* Style rectangle pour chaque médecin */
+            .doctor-item {
+                background: var(--white);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: flex-start;
+                gap: 1.5rem;
+                transition: all 0.3s ease;
+            }
+
+            .doctor-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .doctor-item:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 4px 15px rgba(0, 87, 146, 0.15);
+                border-color: var(--primary);
+            }
+
+            .doctor-avatar {
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.5rem;
+                font-weight: 600;
+                flex-shrink: 0;
+            }
+
+            .doctor-info {
+                flex: 1;
+            }
+
+            .doctor-name {
+                font-size: 1.2rem;
+                font-weight: 600;
+                color: var(--primary);
+                margin-bottom: 0.25rem;
+            }
+
+            .doctor-specialty {
+                background: var(--primary-light);
+                color: var(--primary);
+                padding: 0.25rem 0.75rem;
+                border-radius: 6px;
+                font-size: 0.85rem;
+                font-weight: 500;
+                display: inline-block;
+                margin-bottom: 0.75rem;
+            }
+
+            .doctor-details {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .doctor-detail {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                color: var(--text-light);
+                font-size: 0.9rem;
+            }
+
+            .doctor-detail i {
+                color: var(--primary);
+                width: 20px;
+                text-align: center;
+            }
+
+            .no-results {
+                text-align: center;
+                padding: 3rem;
+                color: var(--text-light);
+            }
+
+            .no-results i {
+                font-size: 3rem;
+                color: var(--border);
+                margin-bottom: 1rem;
+                display: block;
+            }
+
+            .loading {
+                text-align: center;
+                padding: 2rem;
+                color: var(--text-light);
+            }
+
+            .loading-spinner {
+                border: 3px solid var(--primary-light);
+                border-top: 3px solid var(--primary);
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 1rem;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
             }
 
             /* Features Section */
@@ -620,6 +817,15 @@
                     grid-template-columns: 1fr;
                 }
 
+                .doctor-item {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                .doctor-avatar {
+                    margin: 0 auto;
+                }
+
                 .about-content {
                     grid-template-columns: 1fr;
                     gap: 2rem;
@@ -660,8 +866,23 @@
                 .team-image-container {
                     height: 250px;
                 }
+
+                .results-header {
+                    flex-direction: column;
+                    gap: 1rem;
+                    text-align: center;
+                }
+
+                .doctor-container {
+                    padding: 1rem;
+                }
+
+                .doctor-item {
+                    padding: 1rem;
+                }
             }
         </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
     <body>
         <!-- Navigation Bar -->
@@ -732,33 +953,41 @@
                     <form id="search-form" class="search-form">
                         <div class="form-group">
                             <label class="form-label" for="specialite">Spécialité médicale</label>
-                            <select id="specialite" class="form-select" name="specialite">
+                            <select id="specialite" class="form-select" name="specialite" required>
                                 <option value="">Choisir une spécialité</option>
-                                <option value="cardiologue">Cardiologie</option>
-                                <option value="dermatologue">Dermatologie</option>
-                                <option value="pediatre">Pédiatrie</option>
-                                <option value="gynecologue">Gynécologie</option>
-                                <option value="generaliste">Médecine Générale</option>
-                                <option value="dentiste">Dentisterie</option>
-                                <option value="ophtalmologue">Ophtalmologie</option>
-                                <option value="orthopediste">Orthopédie</option>
-                                <option value="psychiatre">Psychiatrie</option>
-                                <option value="chirurgien">Chirurgie</option>
+                                <option value="Médecine générale">Médecine générale</option>
+                                <option value="Cardiologie">Cardiologie</option>
+                                <option value="Dermatologie">Dermatologie</option>
+                                <option value="Gynécologie">Gynécologie</option>
+                                <option value="Pédiatrie">Pédiatrie</option>
+                                <option value="Ophtalmologie">Ophtalmologie</option>
+                                <option value="ORL">ORL</option>
+                                <option value="Dentisterie">Dentisterie</option>
+                                <option value="Orthopédie">Orthopédie</option>
+                                <option value="Psychiatrie">Psychiatrie</option>
+                                <option value="Neurologie">Neurologie</option>
+                                <option value="Endocrinologie">Endocrinologie</option>
+                                <option value="Urologie">Urologie</option>
+                                <option value="Gastro-entérologie">Gastro-entérologie</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="adresse">Ville ou région</label>
                             <input type="text" id="adresse" name="adresse" class="form-input" placeholder="Ex: Casablanca, Rabat, Marrakech...">
                         </div>
-                        <button type="submit" class="search-btn">Rechercher</button>
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i>
+                            Rechercher
+                        </button>
                     </form>
 
-                    <!-- Résultats -->
-                    <div id="search-results" class="search-results"></div>
+                    <!-- Search Results -->
+                    <div id="search-results" class="search-results">
+                        <!-- Results will be inserted here -->
+                    </div>
                 </div>
             </div>
         </section>
-
 
         <!-- Features Section -->
         <section id="services" class="features-section">
@@ -901,18 +1130,106 @@
             });
 
             // Search form submission
-            document.querySelector('.search-form').addEventListener('submit', function(e) {
+            document.getElementById('search-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
+
                 const specialite = document.getElementById('specialite').value;
-                const ville = document.getElementById('ville').value;
+                const adresse = document.getElementById('adresse').value;
                 
-                if (specialite && ville) {
-                    alert(`Recherche de ${specialite} à ${ville} - Cette fonctionnalité sera implémentée bientôt!`);
-                    // Ici vous pouvez ajouter la logique de recherche réelle
-                } else {
-                    alert('Veuillez remplir tous les champs de recherche');
+                if (!specialite) {
+                    alert("Veuillez choisir une spécialité");
+                    return;
+                }
+
+                const resultsDiv = document.getElementById('search-results');
+                resultsDiv.innerHTML = `
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Recherche en cours...</p>
+                    </div>
+                `;
+                resultsDiv.classList.add('active');
+
+                try {
+                    const response = await fetch(`/recherche-medecins?specialite=${encodeURIComponent(specialite)}&adresse=${encodeURIComponent(adresse)}`);
+                    const data = await response.json();
+                    
+                    // Clear loading
+                    resultsDiv.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        resultsDiv.innerHTML = `
+                            <div class="no-results">
+                                <i class="fas fa-search"></i>
+                                <h3>Aucun médecin trouvé</h3>
+                                <p>Essayez avec d'autres critères de recherche.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    // Create results header
+                    const headerHTML = `
+                        <div class="results-header">
+                            <div class="results-count">
+                                <strong>${data.length}</strong> médecin${data.length > 1 ? 's' : ''} trouvé${data.length > 1 ? 's' : ''}
+                            </div>
+                            <button class="clear-results" onclick="clearResults()">
+                                <i class="fas fa-times"></i> Effacer les résultats
+                            </button>
+                        </div>
+                        <div class="doctor-container" id="doctor-container"></div>
+                    `;
+                    
+                    resultsDiv.innerHTML = headerHTML;
+                    const doctorContainer = document.getElementById('doctor-container');
+
+                    // Add doctor items in rectangular format
+                    data.forEach((medecin, index) => {
+                        const initials = medecin.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                        
+                        const doctorItem = document.createElement('div');
+                        doctorItem.className = 'doctor-item';
+                        doctorItem.innerHTML = `
+                            <div class="doctor-avatar">${initials}</div>
+                            <div class="doctor-info">
+                                <div class="doctor-name">Dr. ${medecin.name}</div>
+                                <div class="doctor-specialty">${medecin.specialite}</div>
+                                <div class="doctor-details">
+                                    <div class="doctor-detail">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>${medecin.adresse || 'Adresse non spécifiée'}</span>
+                                    </div>
+                                    <div class="doctor-detail">
+                                        <i class="fas fa-phone"></i>
+                                        <span>${medecin.telephone || 'Téléphone non disponible'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        doctorContainer.appendChild(doctorItem);
+                    });
+
+                } catch (error) {
+                    console.error(error);
+                    resultsDiv.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Erreur de recherche</h3>
+                            <p>Une erreur s'est produite. Veuillez réessayer.</p>
+                        </div>
+                    `;
                 }
             });
+
+            // Clear results function
+            function clearResults() {
+                const resultsDiv = document.getElementById('search-results');
+                resultsDiv.innerHTML = '';
+                resultsDiv.classList.remove('active');
+                document.getElementById('specialite').value = '';
+                document.getElementById('adresse').value = '';
+            }
         </script>
     </body>
 </html>

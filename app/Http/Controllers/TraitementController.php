@@ -3,43 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\Traitement;
+use App\Models\PriseTraitement;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class TraitementController extends Controller
 {
     /**
-     * 👤 PATIENT : يشوف traitements ديالو فقط
+     * 👤 PATIENT : voir ses traitements avec leurs prises
      */
     public function index()
     {
-        $traitements = Traitement::where('patient_id', auth()->id())
-            ->orderBy('heure_prise')
+        $traitements = Traitement::with('prises')
+            ->where('patient_id', auth()->id())
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('patient.traitements.index', compact('traitements'));
     }
 
     /**
-     * 👤 PATIENT : يعلّم Pris / Non pris
+     * 👤 PATIENT : marquer UNE prise comme prise
      */
-    public function markAsTaken($id)
+    public function markPriseAsTaken($id)
     {
-        $traitement = Traitement::findOrFail($id);
+        $prise = PriseTraitement::findOrFail($id);
 
-        if ($traitement->patient_id !== auth()->id()) {
+        // sécurité : vérifier que la prise appartient au patient connecté
+        if ($prise->traitement->patient_id !== auth()->id()) {
             abort(403);
         }
 
-        $traitement->update([
+        $prise->update([
             'pris' => true
         ]);
 
-        return back()->with('success', 'Traitement marqué comme pris.');
+        return back()->with('success', 'Prise marquée comme prise.');
     }
 
     /**
-     * 🧑‍⚕️ MEDECIN : formulaire ajout traitement لمريض
+     * 🧑‍⚕️ MEDECIN : formulaire ajout traitement
      */
     public function createByMedecin(User $patient)
     {
@@ -51,7 +54,7 @@ class TraitementController extends Controller
     }
 
     /**
-     * 🧑‍⚕️ MEDECIN : enregistrer traitement
+     * 🧑‍⚕️ MEDECIN : enregistrer traitement + prises
      */
     public function storeByMedecin(Request $request, User $patient)
     {
@@ -61,28 +64,45 @@ class TraitementController extends Controller
 
         $request->validate([
             'nom_medicament' => 'required|string',
-            'dosage' => 'required|string',
-            'heure_prise' => 'required',
-            'important' => 'nullable|boolean',
+            'dosage'         => 'required|string',
+            'fois_par_jour'  => 'required|integer|min:1|max:5',
+            'duree_jours'    => 'required|integer|min:1|max:365',
+            'heures'         => 'required|array|min:1',
+            'heures.*'       => 'required|date_format:H:i',
+            'important'      => 'nullable|boolean',
         ]);
 
-        Traitement::create([
+        // 1️⃣ créer le traitement
+        $traitement = Traitement::create([
             'patient_id'     => $patient->id,
             'medecin_id'     => auth()->id(),
             'nom_medicament' => $request->nom_medicament,
             'dosage'         => $request->dosage,
-            'heure_prise'    => $request->heure_prise,
+            'fois_par_jour'  => $request->fois_par_jour,
+            'duree_jours'    => $request->duree_jours,
             'important'      => $request->has('important'),
-            'pris'           => false,
         ]);
+
+        // 2️⃣ créer les prises
+        foreach ($request->heures as $heure) {
+            PriseTraitement::create([
+                'traitement_id' => $traitement->id,
+                'heure'         => $heure,
+                'pris'          => false,
+            ]);
+        }
 
         return redirect()
             ->route('medecin.rendez_vous.index')
-            ->with('success', 'Traitement ajouté au patient');
+            ->with('success', 'Traitement ajouté avec ses prises');
     }
+
+    /**
+     * 🧑‍⚕️ MEDECIN : voir les traitements qu’il a ajoutés
+     */
     public function traitementsPatients()
     {
-        $traitements = Traitement::with('patient')
+        $traitements = Traitement::with(['patient', 'prises'])
             ->where('medecin_id', auth()->id())
             ->orderBy('created_at', 'desc')
             ->get();

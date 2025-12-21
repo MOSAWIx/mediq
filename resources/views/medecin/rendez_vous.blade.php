@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -148,30 +147,6 @@
             align-items: center;
             gap: 20px;
             position: relative;
-        }
-
-        .emergency-btn {
-            background-color: var(--danger);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        .emergency-btn:hover {
-            background-color: #c23321;
-            transform: scale(1.05);
-        }
-
-        .emergency-btn i {
-            font-size: 1.1rem;
         }
 
         .user-profile {
@@ -400,12 +375,63 @@
             color: #6c757d;
         }
 
+        /* Emergency Contact Section */
+        .emergency-contact {
+            margin: 12px 0;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(234, 67, 53, 0.1);
+            border: 1px solid rgba(234, 67, 53, 0.3);
+        }
+
+        .emergency-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .emergency-header i {
+            color: var(--danger);
+        }
+
+        .emergency-header strong {
+            color: var(--danger);
+            font-size: 0.95rem;
+        }
+
+        .emergency-details {
+            font-size: 0.95rem;
+            color: #c92a2a;
+            margin-bottom: 4px;
+        }
+
+        .emergency-phone {
+            display: inline-block;
+            margin-top: 6px;
+            font-weight: 700;
+            color: #c92a2a;
+            text-decoration: none;
+        }
+
+        .emergency-phone:hover {
+            text-decoration: underline;
+        }
+
+        .no-emergency {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+
         /* Actions */
         .card-actions {
             display: flex;
             gap: 10px;
             padding-top: 1rem;
             border-top: 1px solid var(--gray-light);
+            margin-top: 1rem;
         }
 
         .btn {
@@ -444,6 +470,17 @@
             box-shadow: 0 4px 12px rgba(234, 67, 53, 0.2);
         }
 
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0d47a1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+        }
+
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -479,22 +516,22 @@
                 width: 70px;
                 overflow: visible;
             }
-
+            
             .sidebar-header h1 span,
             .menu-title,
             .menu-item span {
                 display: none;
             }
-
+            
             .main-content {
                 margin-left: 70px;
             }
-
+            
             .menu-item {
                 justify-content: center;
                 padding: 15px 0;
             }
-
+            
             .menu-item i {
                 font-size: 1.4rem;
             }
@@ -504,19 +541,11 @@
             .navbar {
                 padding: 0 15px;
             }
-
+            
             .user-info {
                 display: none;
             }
-
-            .emergency-btn span {
-                display: none;
-            }
-
-            .emergency-btn {
-                padding: 10px;
-            }
-
+            
             .content {
                 padding: 1.5rem;
             }
@@ -563,10 +592,9 @@
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
-     <!-- Sidebar -->
-     <div class="sidebar">
+    <!-- Sidebar -->
+    <div class="sidebar">
         <div class="sidebar-header">
             <h1><i class="fas fa-stethoscope"></i> <span>SantéPlus</span></h1>
         </div>
@@ -575,11 +603,11 @@
             <div class="menu-section">
                 <div class="menu-title">Espace Médecin</div>
                 <ul class="menu-items">
-                    <a href="{{ route('dashboard.medecin') }}" class="menu-item active">
+                    <a href="{{ route('dashboard.medecin') }}" class="menu-item">
                         <i class="fas fa-home"></i>
                         <span>Tableau de bord</span>
                     </a>
-                    <a href="{{ route('medecin.rendez_vous.index') }}" class="menu-item">
+                    <a href="{{ route('medecin.rendez_vous.index') }}" class="menu-item active">
                         <i class="fas fa-calendar-check"></i>
                         <span>Mes Rendez-vous</span>
                     </a>
@@ -601,7 +629,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Main Content -->
     <div class="main-content">
         <!-- Top Navbar -->
@@ -609,7 +637,7 @@
             <div class="navbar-left">
                 <h2>Mes rendez-vous</h2>
             </div>
-
+            
             <div class="navbar-right">
                 <div class="user-profile" id="userProfile">
                     <div class="user-avatar">DR</div>
@@ -618,7 +646,7 @@
                         <div class="user-role">Médecin</div>
                     </div>
                     <i class="fas fa-chevron-down"></i>
-
+                    
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('profile.edit') }}" class="dropdown-item">
                             <i class="fas fa-user"></i>
@@ -627,9 +655,9 @@
                         <!-- Formulaire de logout -->
                         <form method="POST" action="{{ route('logout') }}" class="logout-form">
                             @csrf
-                            <a href="{{ route('logout') }}"
-                                class="dropdown-item"
-                                onclick="event.preventDefault(); this.closest('form').submit();">
+                            <a href="{{ route('logout') }}" 
+                               class="dropdown-item" 
+                               onclick="event.preventDefault(); this.closest('form').submit();">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span>Déconnexion</span>
                             </a>
@@ -638,7 +666,7 @@
                 </div>
             </div>
         </div>
-
+        
         <!-- Content Area -->
         <div class="content">
             <div class="container">
@@ -646,119 +674,105 @@
                     <i class="fas fa-calendar-alt"></i>
                     Mes rendez-vous
                 </h2>
-
+                
                 @if($rendezVous->count() > 0)
-                <div class="appointments-grid">
-                    @foreach($rendezVous as $rdv)
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="patient-avatar">
-                                {{ substr($rdv->patient->name, 0, 2) }}
+                    <div class="appointments-grid">
+                        @foreach($rendezVous as $rdv)
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="patient-avatar">
+                                        {{ substr($rdv->patient->name, 0, 2) }}
+                                    </div>
+                                    <div class="patient-info">
+                                        <h3>{{ $rdv->patient->name }}</h3>
+                                        <p>Patient</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <div class="info-row">
+                                        <i class="fas fa-user info-icon"></i>
+                                        <span class="info-label">Patient :</span>
+                                        <span class="info-value">{{ $rdv->patient->name }}</span>
+                                    </div>
+                                    
+                                    <div class="info-row">
+                                        <i class="far fa-calendar info-icon"></i>
+                                        <span class="info-label">Date :</span>
+                                        <span class="info-value">{{ \Carbon\Carbon::parse($rdv->date_heure)->format('d/m/Y H:i') }}</span>
+                                    </div>
+                                    
+                                    <div class="info-row">
+                                        <i class="fas fa-info-circle info-icon"></i>
+                                        <span class="info-label">Statut :</span>
+                                        <span class="info-value">
+                                            <span class="status-badge status-{{ $rdv->status }}">
+                                                {{ ucfirst($rdv->status) }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Contact d'urgence -->
+                                @if($rdv->patient && $rdv->patient->patient && $rdv->patient->patient->emergency_phone)
+                                    <div class="emergency-contact">
+                                        <div class="emergency-header">
+                                            <i class="fas fa-phone-alt"></i>
+                                            <strong>Contact d'urgence</strong>
+                                        </div>
+                                        
+                                        <div class="emergency-details">
+                                            {{ $rdv->patient->patient->emergency_name }}
+                                            ({{ $rdv->patient->patient->emergency_relation }})
+                                        </div>
+                                        
+                                        <a href="tel:{{ $rdv->patient->patient->emergency_phone }}" class="emergency-phone">
+                                            {{ $rdv->patient->patient->emergency_phone }}
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="no-emergency">
+                                        Contact d'urgence non renseigné
+                                    </div>
+                                @endif
+                                
+                                <!-- Bouton ajouter traitement -->
+                                <a href="{{ route('medecin.traitements.create', $rdv->patient->id) }}" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+                                    <i class="fas fa-pills"></i>
+                                    Ajouter traitement
+                                </a>
+
+                                <!-- Actions (Accepter/Refuser) -->
+                                @if($rdv->status == 'en attente' || $rdv->status == 'pending')
+                                    <div class="card-actions">
+                                        <form action="{{ route('rendez_vous.accepter', $rdv->id) }}" method="POST" style="flex: 1;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="fas fa-check"></i>
+                                                Accepter
+                                            </button>
+                                        </form>
+
+                                        <form action="{{ route('rendez_vous.refuser', $rdv->id) }}" method="POST" style="flex: 1;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fas fa-times"></i>
+                                                Refuser
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endif
                             </div>
-                            <div class="patient-info">
-                                <h3>{{ $rdv->patient->name }}</h3>
-                                <p>Patient</p>
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="info-row">
-                                <i class="fas fa-user info-icon"></i>
-                                <span class="info-label">Patient :</span>
-                                <span class="info-value">{{ $rdv->patient->name }}</span>
-                            </div>
-
-                            <div class="info-row">
-                                <i class="far fa-calendar info-icon"></i>
-                                <span class="info-label">Date :</span>
-                                <span class="info-value">{{ \Carbon\Carbon::parse($rdv->date_heure)->format('d/m/Y H:i') }}</span>
-                            </div>
-
-                            <div class="info-row">
-                                <i class="fas fa-info-circle info-icon"></i>
-                                <span class="info-label">Statut :</span>
-                                <span class="info-value">
-                                    <span class="status-badge status-{{ $rdv->status }}">
-                                        {{ ucfirst($rdv->status) }}
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                        {{-- CONTACT D’URGENCE --}}
-                        @if(
-                        $rdv->patient &&
-                        $rdv->patient->patient &&
-                        $rdv->patient->patient->emergency_phone
-                        )
-                        <div style="
-        margin-top:12px;
-        padding:12px;
-        border-radius:12px;
-        background:rgba(234,67,53,0.1);
-        color:#c92a2a;
-        border:1px solid rgba(234,67,53,0.3);
-    ">
-                            <strong style="display:flex; align-items:center; gap:8px;">
-                                <i class="fas fa-phone-alt"></i>
-                                Contact d’urgence
-                            </strong>
-
-                            <div style="margin-top:6px; font-size:0.95rem;">
-                                {{ $rdv->patient->patient->emergency_name }}
-                                ({{ $rdv->patient->patient->emergency_relation }})
-                            </div>
-
-                            <a href="tel:{{ $rdv->patient->patient->emergency_phone }}"
-                                style="display:inline-block;margin-top:6px;font-weight:700;color:#c92a2a;">
-                                {{ $rdv->patient->patient->emergency_phone }}
-                            </a>
-                        </div>
-                        @else
-                        <div style="margin-top:10px;font-size:0.85rem;color:#999;font-style:italic;">
-                            Contact d’urgence non renseigné
-                        </div>
-                        @endif
-
-                        <a href="{{ route('medecin.traitements.create', $rdv->patient->id) }}"
-                                class="btn btn-primary"
-                                style="flex:1">
-                                <i class="fas fa-pills"></i>
-                                Ajouter traitement
-                            </a>
-
-
-
-                        @if($rdv->status == 'en attente' || $rdv->status == 'pending')
-                        <div class="card-actions">
-                            <form action="{{ route('rendez_vous.accepter', $rdv->id) }}" method="POST" style="flex: 1;">
-                                @csrf
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-check"></i>
-                                    Accepter
-                                </button>
-                            </form>
-
-                            <form action="{{ route('rendez_vous.refuser', $rdv->id) }}" method="POST" style="flex: 1;">
-                                @csrf
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-times"></i>
-                                    Refuser
-                                </button>
-                            </form>
-                            
-                        </div>
-                        @endif
+                        @endforeach
                     </div>
-                    @endforeach
-                </div>
                 @else
-                <div class="empty-state">
-                    <div class="empty-icon">
-                        <i class="far fa-calendar-times"></i>
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="far fa-calendar-times"></i>
+                        </div>
+                        <h3>Aucun rendez-vous</h3>
+                        <p>Vous n'avez pas encore de rendez-vous programmés. Les demandes apparaîtront ici lorsqu'un patient prendra rendez-vous avec vous.</p>
                     </div>
-                    <h3>Aucun rendez-vous</h3>
-                    <p>Vous n'avez pas encore de rendez-vous programmés. Les demandes apparaîtront ici lorsqu'un patient prendra rendez-vous avec vous.</p>
-                </div>
                 @endif
             </div>
         </div>
@@ -801,5 +815,4 @@
         });
     </script>
 </body>
-
 </html>

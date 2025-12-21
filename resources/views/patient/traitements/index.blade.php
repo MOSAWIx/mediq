@@ -119,6 +119,7 @@
             margin-left: var(--sidebar-width);
             display: flex;
             flex-direction: column;
+            transition: margin-left 0.3s;
         }
 
         /* Top Navbar */
@@ -147,7 +148,6 @@
             gap: 20px;
             position: relative;
         }
-
 
         .user-profile {
             display: flex;
@@ -320,7 +320,7 @@
         }
 
         .treatments-table tr:hover {
-            background-color: var(--primary-light);
+            background-color: rgba(26, 115, 232, 0.03);
         }
 
         .treatments-table tr:last-child td {
@@ -347,13 +347,63 @@
         }
 
         .status-pris {
-            background-color: #28a745;
+            background-color: var(--secondary);
             color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .status-non-pris {
             background-color: #ffc107;
             color: var(--dark);
+        }
+
+        /* Dosage badge */
+        .dosage-badge {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Styling for prise list */
+        .prise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .prise-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background-color: var(--light);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .prise-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .prise-time i {
+            color: var(--primary);
+        }
+
+        .prise-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* Actions */
@@ -373,10 +423,22 @@
             background-color: var(--secondary);
             border: none;
             color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
         }
 
         .btn-success:hover {
             background-color: #2d9249;
+            transform: translateY(-1px);
+        }
+
+        .btn-success:disabled {
+            background-color: var(--gray-light);
+            cursor: not-allowed;
+            transform: none;
         }
 
         .btn-outline {
@@ -415,6 +477,20 @@
 
         .form-inline {
             display: inline;
+        }
+
+        /* Progress indicator */
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
         }
 
         /* Empty State */
@@ -500,10 +576,39 @@
                 justify-content: center;
             }
 
+            .prise-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
 
+            .prise-actions {
+                align-self: flex-end;
+            }
         }
 
         @media (max-width: 576px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--dark);
+                cursor: pointer;
+            }
+
             .treatments-table {
                 display: block;
             }
@@ -557,36 +662,30 @@
                 width: auto;
             }
         }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        // Fonction pour rendre le tableau responsive
-        function makeTableResponsive() {
-            if (window.innerWidth <= 576) {
-                const table = document.querySelector('.treatments-table');
-                if (table) {
-                    const headers = [];
-                    const ths = table.querySelectorAll('th');
-                    ths.forEach(th => headers.push(th.textContent));
 
-                    const tds = table.querySelectorAll('td');
-                    tds.forEach((td, index) => {
-                        const headerIndex = index % headers.length;
-                        td.setAttribute('data-label', headers[headerIndex]);
-                    });
-                }
-            }
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            padding: 10px;
         }
 
-        // Exécuter au chargement et au redimensionnement
-        document.addEventListener('DOMContentLoaded', makeTableResponsive);
-        window.addEventListener('resize', makeTableResponsive);
-    </script>
+        @media (max-width: 576px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h1><i class="fas fa-heartbeat"></i> <span>SantéPlus</span></h1>
         </div>
@@ -607,9 +706,9 @@
                         <i class="fas fa-pills"></i>
                         <span>Mes Traitements</span>
                     </a>
-                    <a href="{{ route('patient.emergency.edit') }}"
-                        class="menu-item active">
-                        <i class="fas fa-phone-alt"></i> Contact d’urgence
+                    <a href="{{ route('patient.emergency.edit') }}" class="menu-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Contact d'urgence</span>
                     </a>
                 </ul>
             </div>
@@ -630,6 +729,9 @@
     <div class="main-content">
         <!-- Top Navbar -->
         <div class="navbar">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="navbar-left">
                 <h2>Mes Traitements</h2>
             </div>
@@ -651,8 +753,7 @@
                         <!-- Logout Form -->
                         <form method="POST" action="{{ route('logout') }}" class="logout-form">
                             @csrf
-                            <a href="{{ route('logout') }}"
-                                class="dropdown-item"
+                            <a href="{{ route('logout') }}" class="dropdown-item"
                                 onclick="event.preventDefault(); this.closest('form').submit();">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span>Déconnexion</span>
@@ -666,13 +767,8 @@
         <!-- Content Area -->
         <div class="content">
             <!-- Header -->
-            <div class="page-header">
-                <h1 class="page-title">
-                    <i class="fas fa-pills"></i>
-                    Mes Traitements
-                </h1>
-                
-            </div>
+          
+            
 
             <!-- Treatments Table -->
             <div class="treatments-container">
@@ -683,66 +779,78 @@
                             <tr>
                                 <th>Médicament</th>
                                 <th>Dosage</th>
-                                <th>Heure de prise</th>
+                                <th>Heures de prise</th>
                                 <th>Important</th>
-                                <th>Pris</th>
-                                <th>Actions</th>
+                                <th>Progression</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($traitements as $t)
                             <tr>
-                                <td>
+                                <td data-label="Médicament">
                                     <strong>{{ $t->nom_medicament }}</strong>
                                 </td>
 
-                                <td>
+                                <td data-label="Dosage">
                                     <span class="dosage-badge">{{ $t->dosage }}</span>
                                 </td>
 
-                                <td>
-                                    <i class="far fa-clock" style="margin-right: 5px;"></i>
-                                    {{ $t->heure_prise }}
+                                <td data-label="Heures de prise">
+                                    <div class="prise-list">
+                                        @foreach ($t->prises as $prise)
+                                        <div class="prise-item">
+                                            <div class="prise-time">
+                                                <i class="far fa-clock"></i>
+                                                <span>{{ $prise->heure }}</span>
+                                            </div>
+                                            <div class="prise-actions">
+                                                @if($prise->pris)
+                                                <span class="status-pris">
+                                                    <i class="fas fa-check"></i>
+                                                    Pris
+                                                </span>
+                                                @else
+                                                <form action="{{ route('prises.pris', $prise->id) }}" method="POST"
+                                                    class="form-inline">
+                                                    @csrf
+                                                    <button type="submit" class="btn-success">
+                                                        <i class="fas fa-check"></i>
+                                                        Marquer comme pris
+                                                    </button>
+                                                </form>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
                                 </td>
 
-                                <td>
+                                <td data-label="Important">
                                     @if($t->important)
                                     <span class="status-badge status-important">
-                                        <i class="fas fa-exclamation-circle"></i> Oui
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        Important
                                     </span>
                                     @else
-                                    <span class="status-badge status-normal">Non</span>
-                                    @endif
-                                </td>
-
-                                <td>
-                                    @if ($t->pris)
-                                    <span class="status-badge status-pris">
-                                        <i class="fas fa-check-circle"></i> Pris
-                                    </span>
-                                    @else
-                                    <span class="status-badge status-non-pris">
-                                        <i class="fas fa-clock"></i> Non pris
+                                    <span class="status-badge status-normal">
+                                        Normal
                                     </span>
                                     @endif
                                 </td>
 
-                                <td>
-                                    <div class="actions-container">
-                                        {{-- Bouton Marquer comme pris --}}
-                                        @if (!$t->pris)
-                                        <form action="{{ route('traitements.pris', $t->id) }}" method="POST" class="form-inline">
-                                            @csrf
-                                            <button type="submit" class="btn-success btn-sm"
-                                                style="padding: 6px 12px; display: flex; align-items: center; gap: 5px;">
-                                                <i class="fas fa-check"></i>
-                                                Pris
-                                            </button>
-                                        </form>
-                                        @endif
-
-                                        {{-- Modifier --}}
-                                        
+                                <td data-label="Progression">
+                                    @php
+                                        $prisesPrises = $t->prises->where('pris', true)->count();
+                                        $totalPrises = $t->prises->count();
+                                        $pourcentage = $totalPrises > 0 ? ($prisesPrises / $totalPrises) * 100 : 0;
+                                    @endphp
+                                    <div class="progress-indicator">
+                                        <div class="progress-text">
+                                            {{ $prisesPrises }}/{{ $totalPrises }}
+                                        </div>
+                                    </div>
+                                    <div style="width: 100%; background-color: var(--gray-light); border-radius: 10px; height: 8px; margin-top: 5px;">
+                                        <div style="width: {{ $pourcentage }}%; background-color: var(--secondary); height: 100%; border-radius: 10px;"></div>
                                     </div>
                                 </td>
                             </tr>
@@ -755,7 +863,10 @@
                     <i class="fas fa-prescription-bottle-alt"></i>
                     <h3>Aucun traitement enregistré</h3>
                     <p>Commencez par ajouter votre premier traitement pour mieux gérer votre santé.</p>
-                    
+                    <a href="#" class="btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Ajouter un traitement</span>
+                    </a>
                 </div>
                 @endif
             </div>
@@ -763,8 +874,8 @@
     </div>
 
     <script>
-        // Gestion du dropdown du profil utilisateur
         document.addEventListener('DOMContentLoaded', function() {
+            // Gestion du dropdown du profil utilisateur
             const userProfile = document.getElementById('userProfile');
             const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -776,6 +887,89 @@
             // Fermer le dropdown en cliquant ailleurs
             document.addEventListener('click', function() {
                 dropdownMenu.classList.remove('active');
+            });
+
+            // Gestion du menu mobile
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('.main-content');
+
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            // Fermer le menu mobile en cliquant à l'extérieur
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 576 && 
+                    !sidebar.contains(e.target) && 
+                    !mobileMenuToggle.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                }
+            });
+
+            // Fonction pour rendre le tableau responsive
+            function makeTableResponsive() {
+                if (window.innerWidth <= 576) {
+                    const table = document.querySelector('.treatments-table');
+                    if (table) {
+                        const headers = [];
+                        const ths = table.querySelectorAll('th');
+                        ths.forEach(th => headers.push(th.textContent));
+
+                        const tds = table.querySelectorAll('td');
+                        tds.forEach((td, index) => {
+                            const headerIndex = index % headers.length;
+                            td.setAttribute('data-label', headers[headerIndex]);
+                        });
+                    }
+                }
+            }
+
+            // Exécuter au chargement et au redimensionnement
+            makeTableResponsive();
+            window.addEventListener('resize', makeTableResponsive);
+
+            // Confirmation pour marquer comme pris
+            const prisForms = document.querySelectorAll('form[action*="prises.pris"]');
+            prisForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    const button = this.querySelector('button');
+                    const heure = this.closest('.prise-item').querySelector('.prise-time span').textContent;
+                    const medicament = this.closest('tr').querySelector('td strong').textContent;
+                    
+                    if (!button.disabled) {
+                        button.disabled = true;
+                        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> En cours...';
+                        
+                        // Simuler l'envoi du formulaire
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="fas fa-check"></i> Pris !';
+                            button.style.backgroundColor = '#28a745';
+                            
+                            // Mettre à jour le compteur de progression
+                            const progressText = this.closest('tr').querySelector('.progress-text');
+                            const [current, total] = progressText.textContent.split('/');
+                            const newCurrent = parseInt(current) + 1;
+                            progressText.textContent = `${newCurrent}/${total}`;
+                            
+                            // Mettre à jour la barre de progression
+                            const progressBar = this.closest('tr').querySelector('.progress-indicator + div div');
+                            const percentage = (newCurrent / parseInt(total)) * 100;
+                            progressBar.style.width = `${percentage}%`;
+                            
+                            // Remplacer le bouton par un badge "Pris"
+                            const priseActions = this.closest('.prise-actions');
+                            priseActions.innerHTML = `
+                                <span class="status-pris">
+                                    <i class="fas fa-check"></i>
+                                    Pris
+                                </span>
+                            `;
+                        }, 800);
+                        
+                        e.preventDefault();
+                    }
+                });
             });
         });
     </script>

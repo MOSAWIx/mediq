@@ -347,64 +347,8 @@
             font-size: 0.9rem;
         }
 
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .action-btn {
-            background-color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .action-btn:hover {
-            background-color: var(--primary-light);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .action-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .action-appointments .action-icon {
-            background-color: var(--accent);
-        }
-
-        .action-treatments .action-icon {
-            background-color: var(--secondary);
-        }
-
-        .action-health .action-icon {
-            background-color: var(--primary);
-        }
-
-        .action-text {
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-
-        .appointments-section,
-        .treatments-section {
+        /* Styles pour les listes */
+        .list-section {
             background-color: white;
             border-radius: 12px;
             padding: 25px;
@@ -412,109 +356,169 @@
             margin-bottom: 30px;
         }
 
-        .section-title {
+        .list-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .list-title {
             font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 20px;
             color: var(--dark);
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+        .list-title i {
+            color: var(--primary);
         }
 
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 20px;
+        .list-count {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
         }
 
-        .btn:hover {
-            background-color: #0d47a1;
-        }
-
-        .appointments-list,
         .treatments-list {
             list-style: none;
         }
 
-        .appointment-item,
         .treatment-item {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
+            gap: 15px;
+            padding: 15px;
             border-bottom: 1px solid var(--gray-light);
+            transition: background-color 0.2s;
         }
 
-        .appointment-item:last-child,
         .treatment-item:last-child {
             border-bottom: none;
         }
 
-        .appointment-info,
+        .treatment-item:hover {
+            background-color: var(--primary-light);
+            border-radius: 8px;
+        }
+
+        .treatment-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--danger);
+            flex-shrink: 0;
+        }
+
         .treatment-info {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            flex: 1;
         }
 
-        .appointment-title,
-        .treatment-title {
+        .treatment-name {
             font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+            font-size: 1rem;
         }
 
-        .appointment-details,
         .treatment-details {
             display: flex;
+            flex-wrap: wrap;
             gap: 15px;
             font-size: 0.9rem;
             color: var(--gray);
         }
 
-        .appointment-actions,
-        .treatment-actions {
+        .treatment-detail {
             display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .treatment-detail i {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Tableau des rendez-vous */
+        .appointments-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .appointments-table thead {
+            background-color: var(--primary-light);
+        }
+
+        .appointments-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .appointments-table tbody tr {
+            border-bottom: 1px solid var(--gray-light);
+            transition: background-color 0.2s;
+        }
+
+        .appointments-table tbody tr:hover {
+            background-color: var(--primary-light);
+        }
+
+        .appointments-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .appointments-table td {
+            padding: 15px;
+            font-size: 0.9rem;
+        }
+
+        .appointment-time {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .appointment-doctor {
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
 
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--gray-light);
-            color: var(--dark);
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-block;
+        .doctor-avatar-small {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
-        .btn-outline:hover {
-            background-color: var(--primary-light);
-            border-color: var(--primary);
+        .doctor-name {
+            font-weight: 500;
+            color: var(--dark);
         }
 
         .status-badge {
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
+            text-transform: uppercase;
         }
 
         .status-confirmed {
@@ -532,149 +536,27 @@
             color: var(--primary);
         }
 
-        .status-completed {
-            background-color: rgba(108, 117, 125, 0.1);
-            color: #6c757d;
-        }
-
-        /* Form styles for Laravel Breeze */
-        .logout-form {
-            display: inline;
-        }
-
-        .logout-btn {
-            background: none;
-            border: none;
-            color: inherit;
-            font: inherit;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            padding: 0;
-        }
-
-        /* Modal d'urgence */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background-color: white;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .modal-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--danger);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
+        .status-canceled {
+            background-color: rgba(234, 67, 53, 0.1);
             color: var(--danger);
         }
 
-        .modal-body {
-            margin-bottom: 25px;
+        /* Messages d'état */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
         }
 
-        .modal-body p {
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--gray-light);
             margin-bottom: 15px;
-            line-height: 1.6;
         }
 
-        .emergency-contacts {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .emergency-contact {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background-color: var(--primary-light);
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-
-        .emergency-contact:hover {
-            background-color: #dbe8fd;
-        }
-
-        .contact-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-        }
-
-        .contact-info {
-            flex: 1;
-        }
-
-        .contact-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .contact-phone {
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        .btn-secondary {
-            background-color: var(--gray-light);
-            color: var(--dark);
-        }
-
-        .btn-secondary:hover {
-            background-color: #c8c9cb;
+        .empty-state p {
+            font-size: 1rem;
+            color: var(--gray);
         }
 
         /* Responsive */
@@ -709,10 +591,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .quick-actions {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
             .navbar {
                 padding: 0 15px;
             }
@@ -721,16 +599,49 @@
                 display: none;
             }
 
-            .appointment-item,
-            .treatment-item {
+            .treatment-details {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
+                gap: 8px;
             }
 
-            .appointment-actions,
-            .treatment-actions {
-                align-self: flex-end;
+            .appointments-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .appointments-table thead {
+                display: none;
+            }
+
+            .appointments-table tbody,
+            .appointments-table tr,
+            .appointments-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .appointments-table tr {
+                margin-bottom: 15px;
+                border: 1px solid var(--gray-light);
+                border-radius: 8px;
+                padding: 10px;
+            }
+
+            .appointments-table td {
+                padding: 10px 15px;
+                border-bottom: 1px solid var(--gray-light);
+                text-align: right;
+            }
+
+            .appointments-table td:last-child {
+                border-bottom: none;
+            }
+
+            .appointments-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                float: left;
+                color: var(--primary);
             }
 
             .emergency-btn span {
@@ -749,7 +660,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h1><i class="fas fa-user-injured"></i><span>SantéPlus</span></h1>
+            <h1><i class="fas fa-heartbeat"></i> <span>SantéPlus</span></h1>
         </div>
 
 
@@ -783,7 +694,7 @@
                             class="menu-item {{ request()->routeIs('patient.emergency.*') ? 'active' : '' }}"
                             style="color:#ffdddd">
                             <i class="fas fa-phone-alt"></i>
-                            <span>Contact d’urgence</span>
+                            <span>Contact d'urgence</span>
                         </a>
                     </li>
                 </ul>
@@ -844,42 +755,130 @@
         <div class="content">
             <div class="welcome-card">
                 <h1>Bonjour, {{ Auth::user()->name }} !</h1>
-                <p>Bienvenue dans votre espace patient SantéPlus. </p>
+                <p>Bienvenue dans votre espace patient SantéPlus.</p>
             </div>
 
             <div class="dashboard-cards">
                 <div class="card appointments">
                     <div class="card-header">
                         <div class="card-title">Rendez-vous</div>
-                        <div class="card-icon">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
+                        <div class="card-icon"><i class="fas fa-calendar-check"></i></div>
                     </div>
-                    <div class="card-value">{{ $rendezVousCount ?? 0 }}</div>
-                    <div class="card-description">Prochains 7 jours</div>
+                    <div class="card-value">{{ $rendezVousCount }}</div>
+                    <div class="card-description">Prochains rendez-vous</div>
                 </div>
 
                 <div class="card treatments">
                     <div class="card-header">
                         <div class="card-title">Traitements</div>
-                        <div class="card-icon">
-                            <i class="fas fa-pills"></i>
-                        </div>
+                        <div class="card-icon"><i class="fas fa-pills"></i></div>
                     </div>
-                    <div class="card-value">{{ $traitementsCount ?? 0 }}</div>
+                    <div class="card-value">{{ $traitementsCount }}</div>
                     <div class="card-description">En cours</div>
                 </div>
             </div>
 
+            <!-- Liste des traitements non pris -->
+            <div class="list-section">
+                <div class="list-header">
+                    <h2 class="list-title">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Traitements non pris
+                    </h2>
+                    <span class="list-count">{{ $traitementsNonPris->count() }}</span>
+                </div>
+                
+                @if($traitementsNonPris->count() > 0)
+                    <ul class="treatments-list">
+                        @foreach($traitementsNonPris as $traitement)
+                            <li class="treatment-item">
+                                <div class="treatment-status"></div>
+                                <div class="treatment-info">
+                                    <div class="treatment-name">{{ $traitement->nom }}</div>
+                                    <div class="treatment-details">
+                                        <div class="treatment-detail">
+                                            <i class="fas fa-prescription-bottle-alt"></i>
+                                            <span>Posologie: {{ $traitement->posologie }}</span>
+                                        </div>
+                                        <div class="treatment-detail">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Début: {{ \Carbon\Carbon::parse($traitement->date_debut)->format('d/m/Y') }}</span>
+                                        </div>
+                                        <div class="treatment-detail">
+                                            <i class="fas fa-calendar-check"></i>
+                                            <span>Fin: {{ \Carbon\Carbon::parse($traitement->date_fin)->format('d/m/Y') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <div class="empty-state">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Tous vos traitements sont à jour !</p>
+                    </div>
+                @endif
+            </div>
 
-
-
-
+            <!-- Liste des rendez-vous d'aujourd'hui -->
+            <div class="list-section">
+                <div class="list-header">
+                    <h2 class="list-title">
+                        <i class="fas fa-calendar-day"></i>
+                        Rendez-vous aujourd'hui
+                    </h2>
+                    <span class="list-count">{{ $rendezVousAujourdhui->count() }}</span>
+                </div>
+                
+                @if($rendezVousAujourdhui->count() > 0)
+                    <table class="appointments-table">
+                        <thead>
+                            <tr>
+                                <th>Heure</th>
+                                <th>Médecin</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($rendezVousAujourdhui as $rdv)
+                                @php
+                                    // Déterminer la classe du statut
+                                    $statusClass = 'status-active';
+                                    if($rdv->status == 'confirmé') $statusClass = 'status-confirmed';
+                                    elseif($rdv->status == 'en attente') $statusClass = 'status-pending';
+                                    elseif($rdv->status == 'annulé') $statusClass = 'status-canceled';
+                                @endphp
+                                <tr>
+                                    <td data-label="Heure" class="appointment-time">
+                                        {{ \Carbon\Carbon::parse($rdv->date_heure)->format('H:i') }}
+                                    </td>
+                                    <td data-label="Médecin">
+                                        <div class="appointment-doctor">
+                                            <div class="doctor-avatar-small">
+                                                {{ substr($rdv->medecin->name, 0, 2) }}
+                                            </div>
+                                            <div class="doctor-name">{{ $rdv->medecin->name }}</div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Statut">
+                                        <span class="status-badge {{ $statusClass }}">
+                                            {{ ucfirst($rdv->status) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <p>Aucun rendez-vous prévu pour aujourd'hui</p>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
-
-
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -897,30 +896,29 @@
                 dropdownMenu.classList.remove('active');
             });
 
-            // Gérer les boutons d'action rapide uniquement s'ils n'ont pas de lien
-            const actionButtons = document.querySelectorAll('.action-btn');
-            actionButtons.forEach(button => {
-                if (!button.getAttribute('href')) {
-                    button.addEventListener('click', function() {
-                        const actionText = this.querySelector('.action-text')?.textContent || 'Action';
-                        alert(`Action: ${actionText} - Fonctionnalité en cours de développement`);
-                    });
-                }
-            });
+            // Rendre le tableau responsive sur mobile
+            function makeTableResponsive() {
+                if (window.innerWidth <= 768) {
+                    const table = document.querySelector('.appointments-table');
+                    if (table) {
+                        const headers = [];
+                        const ths = table.querySelectorAll('th');
+                        ths.forEach(th => headers.push(th.textContent));
 
-            // Gérer les boutons dans les sections sans lien
-            const sectionButtons = document.querySelectorAll('.btn, .btn-outline');
-            sectionButtons.forEach(button => {
-                if (!button.hasAttribute('href')) {
-                    button.addEventListener('click', function() {
-                        const buttonText = this.textContent.trim();
-                        alert(`Action: ${buttonText} - Fonctionnalité en cours de développement`);
-                    });
+                        const tds = table.querySelectorAll('td');
+                        tds.forEach((td, index) => {
+                            const headerIndex = index % headers.length;
+                            td.setAttribute('data-label', headers[headerIndex]);
+                        });
+                    }
                 }
-            });
+            }
+
+            // Exécuter au chargement et au redimensionnement
+            makeTableResponsive();
+            window.addEventListener('resize', makeTableResponsive);
         });
     </script>
 
 </body>
-
 </html>

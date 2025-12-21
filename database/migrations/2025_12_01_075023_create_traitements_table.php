@@ -24,9 +24,9 @@ return new class extends Migration
         
             $table->string('nom_medicament');
             $table->string('dosage');
-            $table->time('heure_prise');
+            
             $table->boolean('important')->default(false);
-            $table->boolean('pris')->default(false);
+            
         
             $table->timestamps();
         });

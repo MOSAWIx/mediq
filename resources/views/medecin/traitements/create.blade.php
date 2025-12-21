@@ -606,18 +606,6 @@
 
         <!-- Content -->
         <div class="content">
-            <div class="page-header">
-                <h1 class="page-title">
-                    <i class="fas fa-pills"></i>
-                    Ajouter un traitement
-                </h1>
-
-                <a href="{{ route('medecin.rendez_vous.index') }}" class="btn">
-                    <i class="fas fa-arrow-left"></i>
-                    Retour
-                </a>
-            </div>
-
             <div class="form-container">
                 <h2 class="form-title">
                     <i class="fas fa-prescription-bottle-alt"></i>
@@ -659,15 +647,41 @@
                     </div>
 
                     <!-- Heure -->
+                    <!-- Fois par jour -->
                     <div class="form-group">
                         <label class="form-label">
-                            Heure de prise <span>*</span>
+                            Nombre de prises par jour <span>*</span>
                         </label>
-                        <input type="time"
-                            name="heure_prise"
+                        <input type="number"
+                            id="fois_par_jour"
+                            name="fois_par_jour"
                             class="form-input"
+                            min="1"
+                            max="5"
                             required>
                     </div>
+
+                    <!-- Durée -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            Durée du traitement (en jours) <span>*</span>
+                        </label>
+                        <input type="number"
+                            name="duree_jours"
+                            class="form-input"
+                            min="1"
+                            required>
+                    </div>
+
+                    <!-- Heures de prise -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            Heures de prise <span>*</span>
+                        </label>
+
+                        <div id="heures-container"></div>
+                    </div>
+
 
                     <!-- Important -->
                     <div class="form-group">
@@ -712,6 +726,27 @@
             document.addEventListener('click', () => {
                 dropdownMenu.classList.remove('active');
             });
+        });
+        const foisInput = document.getElementById('fois_par_jour');
+        const container = document.getElementById('heures-container');
+
+        foisInput.addEventListener('input', function () {
+            const nombre = parseInt(this.value);
+
+            // Vider les anciens champs
+            container.innerHTML = '';
+
+            if (!nombre || nombre < 1) return;
+
+            for (let i = 1; i <= nombre; i++) {
+                const input = document.createElement('input');
+                input.type = 'time';
+                input.name = 'heures[]';
+                input.className = 'form-input';
+                input.required = true;
+
+                container.appendChild(input);
+            }
         });
     </script>
 </body>

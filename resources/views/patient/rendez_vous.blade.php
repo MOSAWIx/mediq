@@ -36,7 +36,7 @@
             min-height: 100vh;
         }
 
-        /* Sidebar Styles */
+        /* Sidebar Styles (identique au dashboard) */
         .sidebar {
             width: var(--sidebar-width);
             background: linear-gradient(180deg, var(--primary) 0%, #0d47a1 100%);
@@ -123,7 +123,7 @@
             flex-direction: column;
         }
 
-        /* Top Navbar */
+        /* Top Navbar (identique au dashboard) */
         .navbar {
             height: var(--header-height);
             background-color: white;
@@ -699,7 +699,6 @@
         }
 
         @media (max-width: 480px) {
-
             .search-section,
             .form-container,
             .appointments-section {
@@ -716,48 +715,64 @@
                 padding: 0.875rem 1.5rem;
             }
         }
+
+        /* Logout form styling */
+        .logout-form {
+            margin: 0;
+            padding: 0;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-    <!-- Sidebar -->
+    <!-- Sidebar (identique au dashboard) -->
     <div class="sidebar">
         <div class="sidebar-header">
             <h1><i class="fas fa-heartbeat"></i> <span>SantéPlus</span></h1>
         </div>
+        
 
         <div class="sidebar-menu">
             <div class="menu-section">
                 <div class="menu-title">Espace Patient</div>
                 <ul class="menu-items">
-                    <!-- Lien vers dashboard patient -->
-                    <a href="{{ route('dashboard.patient') }}" class="menu-item">
-                        <i class="fas fa-home"></i>
-                        <span>Tableau de bord</span>
-                    </a>
-                    <!-- Lien vers rendez-vous -->
-                    <a href="{{ route('patient.rendez_vous.index') }}" class="menu-item active">
-                        <i class="fas fa-calendar-check"></i>
-                        <span>Mes Rendez-vous</span>
-                    </a>
-                    <!-- Lien vers traitements -->
-                    <a href="{{ route('traitements.index') }}" class="menu-item">
-                        <i class="fas fa-pills"></i>
-                        <span>Mes Traitements</span>
-                    </a>
-                    <a href="{{ route('patient.emergency.edit') }}"
-                        class="menu-item active">
-                        <i class="fas fa-phone-alt"></i> Contact d’urgence
-                    </a>
+                    <li>
+                        <a href="{{ route('dashboard.patient') }}"
+                            class="menu-item {{ request()->routeIs('dashboard.patient') ? 'active' : '' }}">
+                            <i class="fas fa-home"></i>
+                            <span>Tableau de bord</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('patient.rendez_vous.index') }}"
+                            class="menu-item {{ request()->routeIs('patient.rendez_vous.*') ? 'active' : '' }}">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Mes Rendez-vous</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('traitements.index') }}"
+                            class="menu-item {{ request()->routeIs('traitements.*') ? 'active' : '' }}">
+                            <i class="fas fa-pills"></i>
+                            <span>Mes Traitements</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('patient.emergency.edit') }}"
+                            class="menu-item {{ request()->routeIs('patient.emergency.*') ? 'active' : '' }}"
+                            style="color:#ffdddd">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>Contact d'urgence</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
-
             <div class="menu-section">
                 <div class="menu-title">Mon Compte</div>
                 <ul class="menu-items">
-                    <!-- Lien vers édition profil -->
-                    <a href="{{ route('profile.edit') }}" class="menu-item">
+                    <a href="{{ route('profile.edit') }}" 
+                       class="menu-item {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
                         <i class="fas fa-user-cog"></i>
                         <span>Mon Profil</span>
                     </a>
@@ -768,15 +783,21 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Top Navbar -->
+        <!-- Top Navbar (identique au dashboard) -->
         <div class="navbar">
             <div class="navbar-left">
                 <h2>Mes Rendez-vous</h2>
             </div>
 
             <div class="navbar-right">
+              
+
                 <div class="user-profile" id="userProfile">
-                    <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
+                    <div class="user-avatar">
+                        @if(Auth::check())
+                            {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                        @endif
+                    </div>
                     <div class="user-info">
                         <div class="user-name">{{ Auth::user()->name }}</div>
                         <div class="user-role">Patient</div>
@@ -788,7 +809,7 @@
                             <i class="fas fa-user"></i>
                             <span>Mon Profil</span>
                         </a>
-                        <!-- Formulaire de logout -->
+                        <!-- Logout Form -->
                         <form method="POST" action="{{ route('logout') }}" class="logout-form">
                             @csrf
                             <a href="{{ route('logout') }}"
@@ -803,7 +824,7 @@
             </div>
         </div>
 
-        <!-- Content Area -->
+        <!-- Content Area (votre contenu original des rendez-vous) -->
         <div class="content">
             <!-- Formulaire de prise de rendez-vous avec recherche intégrée -->
             <div class="form-container">
@@ -900,14 +921,11 @@
                                 Modifier
                             </a>
 
-
-
                             <form action="{{ route('rendez_vous.destroy', $rdv->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment annuler ce rendez-vous ?');">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn-outline btn-danger">Annuler</button>
                             </form>
-
                         </div>
                     </li>
                     @endforeach
@@ -923,6 +941,7 @@
             </div>
         </div>
     </div>
+
     <div id="editModal" class="modal" style="display:none;">
         <div class="modal-content">
             <h3>Modifier le rendez-vous</h3>
@@ -942,18 +961,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const searchInput = document.getElementById("searchDoctor");
-            const resultsBox = document.getElementById("doctorResults");
-            const medecinIdField = document.getElementById("selectedMedecin");
-            const selectedDoctorSection = document.getElementById("selectedDoctorSection");
-            const selectedDoctorName = document.getElementById("selectedDoctorName");
-            const selectedDoctorDetails = document.getElementById("selectedDoctorDetails");
-            const selectedDoctorAvatar = document.getElementById("selectedDoctorAvatar");
-            const submitBtn = document.getElementById("submitBtn");
-
-            const medecins = @json($medecins);
-
-            // User profile dropdown
+            // User profile dropdown (identique au dashboard)
             const userProfile = document.getElementById("userProfile");
             const dropdownMenu = document.getElementById("dropdownMenu");
 
@@ -965,6 +973,18 @@
             document.addEventListener("click", function() {
                 dropdownMenu?.classList.remove("active");
             });
+
+            // Recherche de médecin
+            const searchInput = document.getElementById("searchDoctor");
+            const resultsBox = document.getElementById("doctorResults");
+            const medecinIdField = document.getElementById("selectedMedecin");
+            const selectedDoctorSection = document.getElementById("selectedDoctorSection");
+            const selectedDoctorName = document.getElementById("selectedDoctorName");
+            const selectedDoctorDetails = document.getElementById("selectedDoctorDetails");
+            const selectedDoctorAvatar = document.getElementById("selectedDoctorAvatar");
+            const submitBtn = document.getElementById("submitBtn");
+
+            const medecins = @json($medecins);
 
             // LIVE SEARCH
             searchInput.addEventListener("keyup", function() {
@@ -980,7 +1000,6 @@
                     m.name.toLowerCase().includes(query) ||
                     (m.specialite ?? "").toLowerCase().includes(query) ||
                     (m.adresse ?? "").toLowerCase().includes(query)
-
                 );
 
                 if (results.length === 0) {
@@ -1014,7 +1033,7 @@
 
                     medecinIdField.value = item.dataset.id;
                     selectedDoctorName.textContent = item.dataset.name;
-                    selectedDoctorDetails.textContent = `${item.dataset.specialite} — ${item.dataset.ville}`;
+                    selectedDoctorDetails.textContent = `${item.dataset.specialite} — ${item.dataset.adresse}`;
                     selectedDoctorAvatar.textContent = item.dataset.initials;
 
                     // Afficher la section médecin sélectionné
@@ -1074,49 +1093,8 @@
             }
         });
 
-        // Fonction pour annuler un rendez-vous
-        function cancelAppointment(appointmentId) {
-            if (confirm("Êtes-vous sûr de vouloir annuler ce rendez-vous ?")) {
-                // Ici, vous pouvez ajouter la logique pour annuler le rendez-vous
-                // Par exemple, faire une requête AJAX vers votre backend
-                fetch(`/rendez-vous/${appointmentId}/annuler`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert("Rendez-vous annulé avec succès.");
-                            // Rafraîchir la page ou mettre à jour l'affichage
-                            location.reload();
-                        } else {
-                            alert("Erreur lors de l'annulation du rendez-vous.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert("Erreur lors de l'annulation du rendez-vous.");
-                    });
-            }
-        }
-
-        function openEditModal(id, date) {
-            document.getElementById("editModal").style.display = "flex";
-
-            // Form action
-            document.getElementById("editForm").action = "/rendez-vous/" + id;
-
-            // Remplir la date
-            document.getElementById("editDate").value = date.replace(" ", "T");
-        }
-
-        function closeEditModal() {
-            document.getElementById("editModal").style.display = "none";
-        }
+      
+         
     </script>
 </body>
-
 </html>

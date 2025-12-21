@@ -16,27 +16,31 @@ class RegisterController extends Controller
 
     // store patient
     public function storePatient(Request $request) {
-        $request->validate([
-            'name'     => 'required',
-            'email'    => 'required|email|unique:users',
-            'phone'    => 'required',
-            'password' => 'required|confirmed'
-        ]);
+    $request->validate([
+        'name'     => 'required',
+        'email'    => 'required|email|unique:users',
+        'phone'    => 'required',
+        'password' => 'required|confirmed'
+    ]);
 
-        $user = User::create([
-            'name'       => $request->name,
-            'email'      => $request->email,
-            'telephone'  => $request->phone, // ✅ correct
-            'password'   => Hash::make($request->password),
-            'role'       => 'patient'
-        ]);
+    $user = User::create([
+        'name'       => $request->name,
+        'email'      => $request->email,
+        'telephone'  => $request->phone,
+        'password'   => Hash::make($request->password),
+        'role'       => 'patient'
+    ]);
 
+    // Créer automatiquement le patient lié
+    \App\Models\Patient::create([
+        'user_id' => $user->id
+    ]);
 
-        // Connecter l'utilisateur automatiquement après inscription
-        Auth::login($user);
+    // Connecter l'utilisateur automatiquement
+    Auth::login($user);
 
-        return redirect()->route('dashboard.patient');
-    }
+    return redirect()->route('dashboard.patient');
+}
 
     // formulaire medecin
     public function createMedecin() {

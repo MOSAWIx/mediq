@@ -8,7 +8,7 @@ use App\Http\Controllers\RendezVousController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\EmergencyContactController;
-
+use App\Http\Controllers\SearchController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -32,7 +32,7 @@ Route::post('/register/medecin', [RegisterController::class, 'storeMedecin'])
     ->name('register.medecin.store');
 Route::middleware('auth')->group(function () {
 
-    Route::get('/dashboard/patient', function () {
+    Route::get('/dashboard/patient',[DashboardController::class, 'index'], function () {
         if (auth()->user()->role !== 'patient') {
             abort(403); // interdit
         }
@@ -152,10 +152,20 @@ Route::middleware(['auth', 'role:medecin'])->group(function () {
     )->name('medecin.traitements.index');
 });
 
+    use App\Http\Controllers\PriseController;
+
+Route::middleware(['auth', 'role:patient'])->group(function () {
+    Route::post('/prises/{prise}/pris', [PriseController::class, 'markAsTaken'])
+        ->name('prises.pris');
+});
 
 
 
 
+
+
+Route::get('/recherche-medecins', [SearchController::class, 'search'])
+    ->name('medecins.search');
 
 
 

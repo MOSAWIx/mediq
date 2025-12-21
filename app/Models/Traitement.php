@@ -13,8 +13,9 @@ class Traitement extends Model
         'nom_medicament',
         'dosage',
         'heure_prise',
+        'fois_par_jour',
+        'duree_jours',
         'important',
-        'pris',
     ];
     public function patient()
     {
@@ -24,6 +25,10 @@ class Traitement extends Model
     public function medecin()
     {
         return $this->belongsTo(User::class, 'medecin_id');
+    }
+     public function prises()
+    {
+        return $this->hasMany(PriseTraitement::class);
     }
 }
 
